@@ -5,6 +5,7 @@ exports.createParking  = async(req,res) => {
     try{
         const {name, spots, contacto, parkingType} = req.body;
         const normalizedName = name.toLowerCase().replace(/\s+/g, '_');
+        const userId = req.user.id
 
 
         //1. Validacion de campos obligatorios
@@ -35,7 +36,8 @@ exports.createParking  = async(req,res) => {
             spots,
             contacto,
             parkingType,
-            normalizedName
+            normalizedName,
+            userId
         });
         res.status(201).json({
             message:'Estamiento creado con existo',

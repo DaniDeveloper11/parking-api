@@ -24,5 +24,11 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Parking',
     timestamps:true
   });
+  Parking.associate = (models) => {
+    Parking.belongsTo(models.User,{
+      foreignKey:'userId',
+      as:'owner'
+    })
+  }
   return Parking;
 };
