@@ -6,26 +6,27 @@ exports.createParking  = async(req,res) => {
         const {name, spots, contacto, parkingType} = req.body;
         const normalizedName = name.toLowerCase().replace(/\s+/g, '_');
         const userId = req.user.id
+        console.log(userId)
 
 
         //1. Validacion de campos obligatorios
         if(!name || !spots || !contacto || !parkingType){
-            return res.status(400).json({error:'Todos los campos son obligatorios'});    
+            return res.status(400).json({error:'all fields are required'});    
         }
 
         //2. Reglas de negocios
         if(spots < 50){
-            return res.status(400).json({error:'El Estacionamiento es muy pequeño'});
+            return res.status(400).json({error:'parking lot too small'});
         }
 
         if(spots > 1500){
-            return res.status(400).json({error:'El estacionamiento es muy grande'});
+            return res.status(400).json({error:'parking lot too big'});
         }
         //3.Verificar nombre duplicado
         
         const existing = await Parking.findOne({where:{normalizedName}});
         if(existing)
-            return res.status(409).json({error:'Ya existe un estacionamiento con ese nombre'})
+            return res.status(409).json({error:'there is already a parking lot with this name '})
 
         const allowedTypes = ['public', 'private', 'courtesy'];
         if (!allowedTypes.includes(parkingType)) {
@@ -40,7 +41,7 @@ exports.createParking  = async(req,res) => {
             userId
         });
         res.status(201).json({
-            message:'Estamiento creado con existo',
+            message:'Parking lot was created success',
             parking
         });
 

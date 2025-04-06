@@ -3,7 +3,7 @@ module.exports = {
       username: 'postgres',
       password: '199811',
       database: 'parking_db',
-      host: 'localhost', // si estás dentro de Docker. Usa 'localhost' si estás fuera.
+      host: 'localhost', 
       dialect: 'postgres',
       logging: false,
     }

@@ -15,7 +15,7 @@ exports.createUser = async (req, res) => {
     //Validar si ya existe un usuario con ese email
     const existingUser = await User.findOne({email});
     if(existingUser){
-      return res.status(409).json({error:'El email ya esta registrado'})
+      return res.status(409).json({error:'Email is already exist'})
     }
 
     // Encriptar password
@@ -29,7 +29,7 @@ exports.createUser = async (req, res) => {
       password
     });
 
-    res.status(201).json({ message: 'User created', user });
+    res.status(201).json({ message: 'User was created', user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Something went wrong' });
@@ -53,25 +53,25 @@ exports.loginUser = async (req, res) => {
 
     // Validar campos
     if (!email || !password) {
-      return res.status(400).json({ error: 'Email y contraseña son obligatorios' });
+      return res.status(400).json({ error: 'Email and password are required' });
     }
 
     // Buscar al usuario
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.status(401).json({ error: 'email inválidas' });
+      return res.status(401).json({ error: 'invalid email' });
     }
 
     // Comparar contraseña
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ error: 'password inválidas' });
+      return res.status(401).json({ error: 'invalid password' });
     }
 
     // Generar token
     const token = jwt.sign(
       { id: user.id, email: user.email },
-      'supersecretjwtkey', // 👈 usa process.env.JWT_SECRET en producción
+      'supersecretjwtkey', 
       { expiresIn: '1h' }
     );
 
@@ -79,12 +79,12 @@ exports.loginUser = async (req, res) => {
     const { password: _, ...userData } = user.toJSON();
 
     res.status(200).json({
-      message: 'Login exitoso',
+      message: 'Login is success',
       token,
       user: userData
     });
   }catch(err){
     console.error(err);
-    res.status(500).json({ error: 'Error al iniciar sesión' });
+    res.status(500).json({ error: 'Something went wrong' });
   }
 }

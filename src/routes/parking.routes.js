@@ -5,7 +5,7 @@ const auth = require('../middlewares/authMiddleware');
 
 router.get('/' ,parkingController.getAllParkings);
 router.get('/:id',auth,parkingController.getParkingById);
-router.post('/', parkingController.createParking);
+router.post('/', auth, parkingController.createParking);
 router.put('/:id',auth,parkingController.updateParking);
 router.delete('/:id',auth,parkingController.deleteParking);
 
