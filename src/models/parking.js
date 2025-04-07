@@ -28,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
     Parking.belongsTo(models.User,{
       foreignKey:'userId',
       as:'owner'
-    })
+    });
+    Parking.hasMany(models.CheckIn,{foreignKey:'parkingId'});
   }
   return Parking;
 };

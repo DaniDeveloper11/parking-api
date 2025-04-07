@@ -80,17 +80,48 @@ exports.getAllParkings = async (req, res) => {
   exports.updateParking = async (req, res) => {
     try {
       const { id } = req.params;
-      const updated = await Parking.update(req.body, { where: { id } });
+      const { contacto, spots, ...rest } = req.body;
   
-      if (updated[0] === 0) {
-        return res.status(404).json({ error: 'Parking not found' });
+      if (Object.keys(rest).length > 0) {
+        return res.status(400).json({
+          error: "just can update spots and contact"
+        });
       }
   
-      res.status(204).send(); // No content
+      const parking = await Parking.findByPk(id);
+      if (!parking) {
+        return res.status(404).json({ error: 'parking not found' });
+      }
+  
+      if (spots !== undefined) {
+        const parsedSpots = parseInt(spots);
+        if (isNaN(parsedSpots)) {
+          return res.status(400).json({ error: 'Spots should be a valid number' });
+        }
+        if (parsedSpots < 50 || parsedSpots > 1500) {
+          return res.status(400).json({ error: 'spots number should be between 50 y 1500' });
+        }
+        parking.spots = parsedSpots;
+      }
+  
+      if (contacto) {
+        parking.contacto = contacto;
+      }
+  
+      await parking.save();
+  
+      res.status(200).json({
+        message: 'parking was updated',
+        parking
+      });
+  
     } catch (err) {
-      res.status(500).json({ error: 'Error updating parking' });
+      console.error(err);
+      res.status(500).json({ error: 'Error somethings was wrong to update' });
     }
   };
+  
+  
 
   exports.deleteParking = async (req, res) => {
     try {

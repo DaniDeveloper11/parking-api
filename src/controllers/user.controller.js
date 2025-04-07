@@ -6,14 +6,14 @@ const User = db.User;
 exports.createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-
+    console.log(email)
     // Validación simple
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
     //Validar si ya existe un usuario con ese email
-    const existingUser = await User.findOne({email});
+    const existingUser = await User.findOne({where:{email}});
     if(existingUser){
       return res.status(409).json({error:'Email is already exist'})
     }
