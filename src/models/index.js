@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 
 const sequelize = new Sequelize('parking_db', 'postgres', '199811', {
-  host: 'localhost',
+  host: 'postgres',
   dialect: 'postgres',
   logging: false,
 });

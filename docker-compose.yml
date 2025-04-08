@@ -14,5 +14,24 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  api:
+    build: .
+    container_name: parking-api
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: parking_db
+      DB_USER: postgres
+      DB_PASSWORD: 199811
+    volumes:
+      - .:/usr/src/app
+    command: sh entrypoint.sh
+
 volumes:
   pgdata:
