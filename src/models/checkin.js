@@ -14,10 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   CheckIn.init({
-    // userId: DataTypes.INTEGER,
-    // parkingId: DataTypes.INTEGER,
-    // success: DataTypes.BOOLEAN,
-    // userType: DataTypes.STRING
+
     id:{
       allowNull:false,
       autoIncrement:true,

@@ -5,7 +5,7 @@ const User = db.User;
 
 exports.createUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, userType } = req.body;
     console.log(email)
     // Validación simple
     if (!name || !email || !password) {
@@ -26,7 +26,8 @@ exports.createUser = async (req, res) => {
     const user = await User.create({
       name,
       email,
-      password
+      password,
+      userType
     });
 
     res.status(201).json({ message: 'User was created', user });

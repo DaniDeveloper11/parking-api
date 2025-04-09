@@ -6,7 +6,7 @@ class PrivateHandler extends CheckInHandler {
         const today = new Date();
         const day = today.getDay();
 
-        if(usertype !== 'corporate'){
+        if(userType !== 'corporate'){
             return{
                 success:false,
                 errorCode: 'ACCESS_DENIED',

@@ -7,5 +7,8 @@ npm install -g sequelize-cli
 echo "🛠 Corriendo migraciones..."
 npx sequelize-cli db:migrate
 
+# echo " 🌱 Poblando la base de datos..."
+# npx sequelize-cli db:seed:all
+
 echo "🚀 Levantando servidor..."
 npm run dev
