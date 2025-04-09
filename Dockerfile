@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 RUN npm install
+RUN npm install -g nodemon
 
 COPY . .
 
@@ -11,4 +12,4 @@ RUN chmod +x entrypoint.sh
 
 EXPOSE 3000
 
-CMD ["sh", "entrypoint.sh"]
+CMD ["nodemon", "src/server.js"]
