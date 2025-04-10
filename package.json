@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx jest user && npx jest auth && npx checkin.visitor && npx checkin.provider && npx checkin.corporate && npx graphql/allCheckIns npx graphql/parkings ",
     "start": "node src/server.js",
     "migrate": "npx sequelize-cli db:migrate --env development",
     "seed": "npx sequelize-cli db:seed:all --env development",

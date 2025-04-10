@@ -8,13 +8,13 @@ require('dotenv').config();
 exports.createUser = async (req, res) => {
   try {
     const { name, email, password, userType } = req.body;
-    const emailNormalized = email.toLowerCase()
+    // const emailNormalized = email.toLowerCase()
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
     
-    const existingUser = await User.findOne({where:{email}});
+    const existingUser = await User.findOne({where:{email: email.toLowerCase()}});
     if(existingUser){
       return res.status(409).json({error:'Email is already exist'})
     }
@@ -22,7 +22,7 @@ exports.createUser = async (req, res) => {
 
     const user = await User.create({
       name,
-      emailNormalized,
+      email:email.toLowerCase(),
       password,
       userType
     });
@@ -53,7 +53,7 @@ exports.loginUser = async (req, res) => {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email: email.toLowerCase() } });
     if (!user) {
       return res.status(401).json({ error: 'invalid email' });
     }

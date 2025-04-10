@@ -10,6 +10,7 @@ afterAll(async () => {
   await db.sequelize.close(); // close database
 });
 
+
 describe('USERS API', () => {
   describe('GET /api/users', () => {
     it('should respond with status 200 and return an array', async () => {
@@ -24,8 +25,8 @@ describe('USERS API', () => {
       const userData = {
         name: 'Daniel',
         email: 'daniel@example.com',
-        password: 'securepassword',
-        userType: 'admin'
+        password: '123456',
+        userType: 'visitor'
       };
 
       const response = await request(app).post('/api/users').send(userData);
@@ -41,7 +42,7 @@ describe('USERS API', () => {
         name: 'Duplicado',
         email: 'daniel@example.com', 
         password: 'otraClave',
-        userType: 'user'
+        userType: 'visitor'
       });
 
       expect(response.statusCode).toBe(409);
