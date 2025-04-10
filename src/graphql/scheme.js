@@ -32,12 +32,11 @@ const CheckInType = new GraphQLObjectType({
     user: {
       type: UserMinimalType,
       resolve: (checkIn) => {
-        console.log('🧪 Resolviendo usuario:', checkIn.User); // DEBUG
-       return checkIn.User }// <-- Aquí conectamos con Sequelize
+       return checkIn.User }
     },
     parking: {
       type: ParkingType,
-      resolve: (checkIn) => checkIn.Parking // <-- Igual aquí
+      resolve: (checkIn) => checkIn.Parking 
     }
   })
 });
