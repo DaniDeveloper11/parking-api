@@ -26,7 +26,8 @@
     "pg": "^8.14.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "^6.6.2",
+    "supertest": "^7.1.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

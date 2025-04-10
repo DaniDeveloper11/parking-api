@@ -1,14 +1,14 @@
 'use strict';
 
-const { Sequelize } = require('sequelize');
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
+const { Sequelize } = require('sequelize');
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.js')[env];
 
-const sequelize = new Sequelize('parking_db', 'postgres', '199811', {
-  host: 'postgres',
-  dialect: 'postgres',
-  logging: false,
-});
+console.log('🧪 Sequelize usando configuración:', config);
+
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 const db = {};
 
@@ -20,7 +20,9 @@ fs.readdirSync(__dirname)
   });
 
 Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) db[modelName].associate(db);
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
 });
 
 db.sequelize = sequelize;
