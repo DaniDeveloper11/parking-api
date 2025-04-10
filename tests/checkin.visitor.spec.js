@@ -36,9 +36,9 @@ afterAll(async () => {
   jest.useRealTimers();
 });
 
-describe('👨‍👩‍👧‍👦 Usuario VISITOR', () => {
-  test('✅ Puede hacer check-in en cortesía solo fin de semana', async () => {
-    mockDate('2025-04-06T10:00:00'); // Domingo
+describe('VISITOR User', () => {
+  test('✅ Can check-in in courtesy parking just on weekdays', async () => {
+    mockDate('2025-04-06T10:00:00'); // Sunday
 
     const res = await request(app)
       .post('/api/checkin')
@@ -49,8 +49,8 @@ describe('👨‍👩‍👧‍👦 Usuario VISITOR', () => {
     expect(res.body).toHaveProperty('success', true);
   });
 
-  test('❌ No puede hacer check-in en cortesía entre semana', async () => {
-    mockDate('2025-04-09T10:00:00'); // Miércoles
+  test('❌ cannot check-in on weekdays in courtesy parking.', async () => {
+    mockDate('2025-04-09T10:00:00'); // wendsgay
 
     const res = await request(app)
       .post('/api/checkin')
@@ -61,7 +61,7 @@ describe('👨‍👩‍👧‍👦 Usuario VISITOR', () => {
     expect(res.body).toHaveProperty('success', false);
   });
 
-  test('✅ Puede hacer check-in en público', async () => {
+  test('✅ can check in public parking', async () => {
     mockDate('2025-04-09T12:00:00'); // Miércoles
 
     const res = await request(app)
@@ -73,8 +73,8 @@ describe('👨‍👩‍👧‍👦 Usuario VISITOR', () => {
     expect(res.body).toHaveProperty('success', true);
   });
 
-  test('❌ No puede hacer check-in en privado', async () => {
-    mockDate('2025-04-09T12:00:00'); // Miércoles
+  test('❌cannot check-in privatr psrking.', async () => {
+    mockDate('2025-04-09T12:00:00'); // 
 
     const res = await request(app)
       .post('/api/checkin')

@@ -12,9 +12,7 @@ const mockDate = (dateStr) => {
 
   beforeAll(async () => {
     await db.sequelize.sync({ force: true });
-  
-    // const hashedPassword = await bcrypt.hash('123456', 10);
-  
+
     corporateUser = await db.User.create({
       name: 'Corporate Test',
       email: 'corporate@test.com',
@@ -44,9 +42,9 @@ const mockDate = (dateStr) => {
     jest.useRealTimers(); // restaurar fecha real
   });
 
-describe('👨‍💼 Usuario CORPORATE', () => {
-  test('✅ Puede hacer check-in en parking privado entre semana', async () => {
-    mockDate('2025-04-08T10:00:00'); // Martes
+describe('CORPORATE User', () => {
+  test('✅ Can check-in in private parking just on weekdays', async () => {
+    mockDate('2025-04-08T10:00:00'); // tuesday
 
     const res = await request(app)
       .post('/api/checkin')
@@ -57,8 +55,8 @@ describe('👨‍💼 Usuario CORPORATE', () => {
     expect(res.body).toHaveProperty('success', true);
   });
 
-  test('❌ No puede hacer check-in en parking privado en fin de semana', async () => {
-    mockDate('2025-04-06T10:00:00'); // Domingo
+  test('❌ Cannot check-in en private parkingen on weekdays', async () => {
+    mockDate('2025-04-06T10:00:00'); // sunday
 
     const res = await request(app)
       .post('/api/checkin')
@@ -69,7 +67,7 @@ describe('👨‍💼 Usuario CORPORATE', () => {
     expect(res.body).toHaveProperty('success', false);
   });
 
-  test('✅ Puede hacer check-in en parking público', async () => {
+  test('✅Cam check-in in public parking', async () => {
     mockDate('2025-04-09T14:00:00'); // Miércoles
 
     const res = await request(app)
@@ -81,7 +79,7 @@ describe('👨‍💼 Usuario CORPORATE', () => {
     expect(res.body).toHaveProperty('success', true);
   });
 
-  test('❌ No puede hacer check-in en parking de cortesía', async () => {
+  test('❌ Cannot check-in in courtesy parking ', async () => {
     mockDate('2025-04-09T14:00:00'); // Miércoles
 
     const res = await request(app)

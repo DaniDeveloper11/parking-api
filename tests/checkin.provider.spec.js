@@ -21,14 +21,14 @@ let privateParking, publicParking, courtesyParking;
       userType: 'provider',
     });
   
-    // Login real para obtener token
+    // Login
     const loginRes = await request(app)
       .post('/api/users/login')
       .send({ email: 'provider@test.com', password: '123456' });
   
     token = loginRes.body.token;
   
-    // Crear parkings
+    // Create parkings
     privateParking = await db.Parking.create({ name: 'Privado', parkingType: 'private' });
     publicParking = await db.Parking.create({ name: 'Público', parkingType: 'public' });
     courtesyParking = await db.Parking.create({ name: 'Cortesía', parkingType: 'courtesy' });
@@ -38,8 +38,8 @@ afterAll(async () => {
   await db.sequelize.close();
 });
 
-describe('👨‍🔧 Usuario PROVIDER', () => {
-    test('✅ Puede hacer check-in en parking público', async () => {
+describe('PROVIDER User', () => {
+    test('✅ can check-in in public parking', async () => {
       const res = await request(app)
         .post('/api/checkin')
         .set('Authorization', `Bearer ${token}`)
@@ -49,7 +49,7 @@ describe('👨‍🔧 Usuario PROVIDER', () => {
       expect(res.body).toHaveProperty('success', true);
     });
   
-    test('❌ No puede hacer check-in en privado', async () => {
+    test('❌ cannot check-in in private parking', async () => {
       const res = await request(app)
         .post('/api/checkin')
         .set('Authorization', `Bearer ${token}`)
@@ -59,7 +59,7 @@ describe('👨‍🔧 Usuario PROVIDER', () => {
       expect(res.body).toHaveProperty('success', false);
     });
   
-    test('❌ No puede hacer check-in en cortesía', async () => {
+    test('❌ cannot check-in in courtesy', async () => {
       const res = await request(app)
         .post('/api/checkin')
         .set('Authorization', `Bearer ${token}`)

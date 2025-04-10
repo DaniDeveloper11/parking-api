@@ -1,12 +1,13 @@
 const db = require('../models');
 const Parking = db.Parking;
+const sanitizePhone = require('../helpers/sanitizePhone')
 
 exports.createParking  = async(req,res) => {
     try{
         const {name, spots, contacto, parkingType} = req.body;
         const normalizedName = name.toLowerCase().replace(/\s+/g, '_');
         const userId = req.user.id
-        console.log(userId)
+        const addLada  = sanitizePhone(contacto);
 
 
         //1. Validacion de campos obligatorios
@@ -35,7 +36,7 @@ exports.createParking  = async(req,res) => {
         const parking = await Parking.create({ 
             name,
             spots,
-            contacto,
+            addLada,
             parkingType,
             normalizedName,
             userId

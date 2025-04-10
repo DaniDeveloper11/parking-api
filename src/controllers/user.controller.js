@@ -6,26 +6,21 @@ const User = db.User;
 exports.createUser = async (req, res) => {
   try {
     const { name, email, password, userType } = req.body;
-    console.log(email)
-    // Validación simple
+    const emailNormalized = email.toLowerCase()
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    //Validar si ya existe un usuario con ese email
+    
     const existingUser = await User.findOne({where:{email}});
     if(existingUser){
       return res.status(409).json({error:'Email is already exist'})
     }
 
-    // Encriptar password
-    // const salt = await bcrypt.genSalt(10);
-    // const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Crear usuario
     const user = await User.create({
       name,
-      email,
+      emailNormalized,
       password,
       userType
     });
@@ -52,31 +47,26 @@ exports.loginUser = async (req, res) => {
   try{
     const { email, password } = req.body;
 
-    // Validar campos
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
-    // Buscar al usuario
     const user = await User.findOne({ where: { email } });
     if (!user) {
       return res.status(401).json({ error: 'invalid email' });
     }
 
-    // Comparar contraseña
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ error: 'invalid password' });
     }
 
-    // Generar token
     const token = jwt.sign(
       { id: user.id, email: user.email },
       'supersecretjwtkey', 
       { expiresIn: '1h' }
     );
 
-    // Opcional: quitar password antes de retornar
     const { password: _, ...userData } = user.toJSON();
 
     res.status(200).json({

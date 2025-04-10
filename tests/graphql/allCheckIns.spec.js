@@ -45,13 +45,13 @@ afterAll(async () => {
 
 describe('🔍 GraphQL - allCheckIns', () => {
 
-    test('✅ CheckIn en base debe tener relación con el usuario', async () => {
+    test('✅ CheckIn in database has to have realation with user', async () => {
         const checkIns = await db.CheckIn.findAll({ include: db.User });
         expect(checkIns[0].User).toBeTruthy();
       });
 
 
-  test('✅ Debe retornar todos los check-ins con usuarios y parkings asociados', async () => {
+  test('✅ has to return all of check-ins with users and parkings', async () => {
     const query = `
       query {
         allCheckIns {

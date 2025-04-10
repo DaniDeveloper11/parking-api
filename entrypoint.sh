@@ -1,14 +1,14 @@
 # entrypoint.sh
 #!/bin/sh
 
-echo "Corriendo el fakin sequelize que no quiere instalarse a menos de que sea de amnera global el hdspm"
+echo "Sequelize was added"
 npm install -g sequelize-cli
 
-echo "🛠 Corriendo migraciones..."
+echo "🛠 Runing migrations..."
 npx sequelize-cli db:migrate
 
-echo " 🌱 Poblando la base de datos..."
+echo " 🌱 Filling Data Base..."
 npx sequelize-cli db:seed:all
 
-echo "🚀 Levantando servidor..."
+echo "🚀 Server is ready to use..."
 npm run dev

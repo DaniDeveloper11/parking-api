@@ -22,6 +22,14 @@ module.exports = {
         userType:'visitor',
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        name:'Miguel',
+        email:'miguel@correo.com',
+        password:password,
+        userType:'provider',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ]);
 
