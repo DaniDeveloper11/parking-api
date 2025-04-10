@@ -4,6 +4,7 @@ const CourtesyHandler = require('./CourtesyHandler');
 
 class CheckInFactory {
     static getHandler(parking, userType){
+        console.log(parking.parkingType)
         switch (parking.parkingType){
             case 'public':
                 return new PublicHandler(parking, userType);
