@@ -7,7 +7,8 @@ const userRoutes = require('./routes/user.routes');
 const parkingRoutes = require('./routes/parking.routes');
 const checkinRoutes = require('./routes/chekin.routes')
 
- const auth = require('./middlewares/authMiddleware')
+//  const auth = require('./middlewares/authMiddleware')
+ require('dotenv').config();
 
 const app = express();
 app.use(morgan('dev'));
