@@ -13,6 +13,15 @@ const ParkingType = new GraphQLObjectType({
   })
 });
 
+const UserMinimalType = new GraphQLObjectType({
+  name: 'UserMinimal',
+  fields: () => ({
+    name: { type: GraphQLString },
+    email: { type: GraphQLString },
+    userType: { type: GraphQLString }
+  })
+});
+
 const CheckInType = new GraphQLObjectType({
   name: 'CheckIn',
   fields: () => ({
@@ -21,16 +30,15 @@ const CheckInType = new GraphQLObjectType({
     success: { type: GraphQLString },
     createdAt: { type: GraphQLString },
     user: {
-      type: new GraphQLObjectType({
-        name: 'UserMinimal',
-        fields: () => ({
-          name: { type: GraphQLString },
-          email: { type: GraphQLString },
-          userType: { type: GraphQLString }
-        })
-      })
+      type: UserMinimalType,
+      resolve: (checkIn) => {
+        console.log('🧪 Resolviendo usuario:', checkIn.User); // DEBUG
+       return checkIn.User }// <-- Aquí conectamos con Sequelize
     },
-    parking: { type: ParkingType }
+    parking: {
+      type: ParkingType,
+      resolve: (checkIn) => checkIn.Parking // <-- Igual aquí
+    }
   })
 });
 
@@ -80,50 +88,50 @@ const RootQuery = new GraphQLObjectType({
       }
     },
 
-    myCheckIns: {
-      type: CheckInListType,
-      args: {
-        skip: { type: GraphQLInt },
-        limit: { type: GraphQLInt }
-      },
-      resolve: async (_, { skip = 0, limit = 10 }, context) => {
-        const userId = context.user.id;
+    // myCheckIns: {
+    //   type: CheckInListType,
+    //   args: {
+    //     skip: { type: GraphQLInt },
+    //     limit: { type: GraphQLInt }
+    //   },
+    //   resolve: async (_, { skip = 0, limit = 10 }, context) => {
+    //     const userId = context.user.id;
     
-        const totalItems = await db.CheckIn.count({ where: { userId } });
+    //     const totalItems = await db.CheckIn.count({ where: { userId } });
     
-        const data = await db.CheckIn.findAll({
-          where: { userId },
-          include: [{ model: db.Parking }],
-          offset: skip,
-          limit,
-          order: [['createdAt', 'DESC']]
-        });
+    //     const data = await db.CheckIn.findAll({
+    //       where: { userId },
+    //       include: [{ model: db.Parking }],
+    //       offset: skip,
+    //       limit,
+    //       order: [['createdAt', 'DESC']]
+    //     });
     
-        return { totalItems, data };
-      }
-    },
+    //     return { totalItems, data };
+    //   }
+    // },
     
-    checkInsByParking: {
-      type: CheckInListType,
-      args: {
-        parkingId: { type: new GraphQLNonNull(GraphQLInt) },
-        skip: { type: GraphQLInt },
-        limit: { type: GraphQLInt }
-      },
-      resolve: async (_, { parkingId, skip = 0, limit = 10 }) => {
-        const totalItems = await db.CheckIn.count({ where: { parkingId } });
+    // checkInsByParking: {
+    //   type: CheckInListType,
+    //   args: {
+    //     parkingId: { type: new GraphQLNonNull(GraphQLInt) },
+    //     skip: { type: GraphQLInt },
+    //     limit: { type: GraphQLInt }
+    //   },
+    //   resolve: async (_, { parkingId, skip = 0, limit = 10 }) => {
+    //     const totalItems = await db.CheckIn.count({ where: { parkingId } });
     
-        const data = await db.CheckIn.findAll({
-          where: { parkingId },
-          include: [{ model: db.User }],
-          offset: skip,
-          limit,
-          order: [['createdAt', 'DESC']]
-        });
+    //     const data = await db.CheckIn.findAll({
+    //       where: { parkingId },
+    //       include: [{ model: db.User }],
+    //       offset: skip,
+    //       limit,
+    //       order: [['createdAt', 'DESC']]
+    //     });
     
-        return { totalItems, data };
-      }
-    },
+    //     return { totalItems, data };
+    //   }
+    // },
 
     allCheckIns: {
       type: CheckInListType,

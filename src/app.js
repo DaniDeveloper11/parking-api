@@ -13,7 +13,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 
-app.use('/graphql',auth);
+// app.use('/graphql',auth);
 app.use('/graphql', graphqlHTTP((req) =>({
     schema:parkingSchema,
     graphql:true,
