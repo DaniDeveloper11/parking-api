@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     spots: DataTypes.INTEGER,
     contacto: DataTypes.STRING,
-    parkingType: DataTypes.ENUM('publi','private','coutesy'),
+    parkingType: DataTypes.ENUM('public','private','courtesy'),
     normalizedName:DataTypes.STRING
   }, {
     sequelize,

@@ -8,7 +8,6 @@ exports.checkIn = async (req,res) => {
     try{
         const { parkingId } = req.body;
         const userId = req.user.id;
-        // console.log(user)
 
         if(!parkingId){
             return res.status(404).json({

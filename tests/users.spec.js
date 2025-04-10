@@ -10,7 +10,7 @@ afterAll(async () => {
   await db.sequelize.close(); // close database
 });
 
-describe('🧪 USERS API', () => {
+describe('USERS API', () => {
   describe('GET /api/users', () => {
     it('should respond with status 200 and return an array', async () => {
       const response = await request(app).get('/api/users');
